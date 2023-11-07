@@ -108,5 +108,10 @@ namespace CharTable
         {
             
         }
+
+        public virtual void OnBatchModified(object? sender)
+        {
+            
+        }
     }
 }

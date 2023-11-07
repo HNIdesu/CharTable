@@ -41,6 +41,7 @@
             button_Search = new Button();
             textBox_Search = new TextBox();
             tabControl1 = new TabControl();
+            clearUseCountToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             fontRightClickContextMenuStrip.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -52,7 +53,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { settingToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { settingToolStripMenuItem, clearUseCountToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(826, 25);
@@ -156,6 +157,13 @@
             tabControl1.Size = new Size(826, 350);
             tabControl1.TabIndex = 0;
             // 
+            // clearUseCountToolStripMenuItem
+            // 
+            clearUseCountToolStripMenuItem.Name = "clearUseCountToolStripMenuItem";
+            clearUseCountToolStripMenuItem.Size = new Size(92, 21);
+            clearUseCountToolStripMenuItem.Text = "清空使用记录";
+            clearUseCountToolStripMenuItem.Click += clearUseCountToolStripMenuItem_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -196,5 +204,6 @@
         private TabControl tabControl1;
         private ToolStripStatusLabel toolStripStatusLabel_Info;
         private ToolStripMenuItem toolStripMenuItem_Mark;
+        private ToolStripMenuItem clearUseCountToolStripMenuItem;
     }
 }

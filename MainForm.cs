@@ -161,5 +161,10 @@ namespace CharTable
                 ResourceManager.Instance.UpdateFont(item);
             }
         }
+
+        private void clearUseCountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResourceManager.Instance.ClearUseCount();
+        }
     }
 }

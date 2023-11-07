@@ -1,4 +1,5 @@
 ﻿using System.Data.SQLite;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CharTable
 {
@@ -39,55 +40,83 @@ namespace CharTable
             reader.Close();
             return list;
         }
+
+        public void ClearUseCount()
+        {
+            using (SQLiteCommand cmd = _SQLiteConnection.CreateCommand())
+            {
+                cmd.CommandText = "UPDATE data SET use_count=0";
+                cmd.ExecuteNonQuery();
+                NotifyBatchMotified();
+            }
+            return;
+                
+        }
+
         public void UpdateFont(Item item)
         {
-            SQLiteCommand cmd = _SQLiteConnection.CreateCommand();
-            cmd.CommandText = $"UPDATE data SET keywords=\"{string.Join(",",item.Keywords)}\" ,use_count={item.UseCount} ,like={(item.IsLike?1:0)} WHERE unicode = {(int)item.Char}";
-            cmd.ExecuteNonQuery();
-            NotifyItemChanged(item);
+            using (SQLiteCommand cmd = _SQLiteConnection.CreateCommand())
+            {
+                cmd.CommandText = $"UPDATE data SET keywords=\"{string.Join(",", item.Keywords)}\" ,use_count={item.UseCount} ,like={(item.IsLike ? 1 : 0)} WHERE unicode = {(int)item.Char}";
+                cmd.ExecuteNonQuery();
+                NotifyItemUpdated(item);
+            }
+                
+            
         }
 
         public void InsertFont(char ch, IEnumerable<string>? keywords)
         {
-            SQLiteCommand cmd = _SQLiteConnection.CreateCommand();
-            Item item = new Item(ch, keywords!=null? keywords:new string[] {ch.ToString() });
-            cmd.CommandText = $"INSERT INTO data VALUES ({(int)ch},\"{string.Join(",", item.Keywords)}\",0,0)";
-            cmd.ExecuteNonQuery();
-            NotifyItemInserted(item);
+            using (SQLiteCommand cmd = _SQLiteConnection.CreateCommand())
+            {
+                Item item = new Item(ch, keywords != null ? keywords : new string[] { ch.ToString() });
+                cmd.CommandText = $"INSERT INTO data VALUES ({(int)ch},\"{string.Join(",", item.Keywords)}\",0,0)";
+                cmd.ExecuteNonQuery();
+                NotifyItemInserted(item);
+            }
+                
         }
 
         public List<Item> GetAllFonts()
         {
-            SQLiteCommand cmd= _SQLiteConnection.CreateCommand();
-            cmd.CommandText = "SELECT * FROM data";
-            SQLiteDataReader reader= cmd.ExecuteReader();
-            List<Item> list = new List<Item>();
-            while (reader.Read())
+            using(SQLiteCommand cmd = _SQLiteConnection.CreateCommand())
             {
-                Item item = new Item((char)reader.GetInt32(0),reader.GetString(1).Split(","));
-                item.UseCount = reader.GetInt32(2);
-                item.IsLike= reader.GetInt32(3)!=0;
-                list.Add(item);
+                cmd.CommandText = "SELECT * FROM data";
+                SQLiteDataReader reader = cmd.ExecuteReader();
+                List<Item> list = new List<Item>();
+                while (reader.Read())
+                {
+                    Item item = new Item((char)reader.GetInt32(0), reader.GetString(1).Split(","));
+                    item.UseCount = reader.GetInt32(2);
+                    item.IsLike = reader.GetInt32(3) != 0;
+                    list.Add(item);
+                }
+                reader.Close();
+                return list;
             }
-            reader.Close();
-            return list;
+            
+            
         }
 
         public List<Item> SearchFonts(string keyword)
         {
-            SQLiteCommand cmd = _SQLiteConnection.CreateCommand();
-            cmd.CommandText = $"SELECT * FROM data WHERE keywords LIKE \"%{keyword}%\"";
-            SQLiteDataReader reader = cmd.ExecuteReader();
-            List<Item> list = new List<Item>();
-            while (reader.Read())
+            using(SQLiteCommand cmd = _SQLiteConnection.CreateCommand())
             {
-                Item item = new Item((char)reader.GetInt32(0), reader.GetString(1).Split(","));
-                item.UseCount = reader.GetInt32(2);
-                item.IsLike = reader.GetInt32(3) != 0;
-                list.Add(item);
+                cmd.CommandText = $"SELECT * FROM data WHERE keywords LIKE \"%{keyword}%\"";
+                SQLiteDataReader reader = cmd.ExecuteReader();
+                List<Item> list = new List<Item>();
+                while (reader.Read())
+                {
+                    Item item = new Item((char)reader.GetInt32(0), reader.GetString(1).Split(","));
+                    item.UseCount = reader.GetInt32(2);
+                    item.IsLike = reader.GetInt32(3) != 0;
+                    list.Add(item);
+                }
+                reader.Close();
+                return list;
             }
-            reader.Close();
-            return list;
+                        
+            
         }
 
         public void NotifyItemInserted(Item status)
@@ -102,7 +131,7 @@ namespace CharTable
                 o.OnItemRemoved(this, status);
         }
 
-        public void NotifyItemChanged(Item status)
+        public void NotifyItemUpdated(Item status)
         {
             foreach (var o in ObserverList)
                 o.OnItemUpdated(this, status);
@@ -116,6 +145,12 @@ namespace CharTable
         public void UnregisterObserver(Observer<Item> observer)
         {
             ObserverList.Remove(observer);
+        }
+
+        public void NotifyBatchMotified()
+        {
+            foreach (var o in ObserverList)
+                o.OnBatchModified(this);
         }
     }
 }

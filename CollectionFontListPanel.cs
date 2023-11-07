@@ -31,5 +31,10 @@
             if (status.IsLike)
                 RemoveItem(status);
         }
+
+        public override void OnBatchModified(object? sender)
+        {
+            LoadItems();
+        }
     }
 }

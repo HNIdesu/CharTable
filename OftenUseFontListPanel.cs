@@ -29,5 +29,10 @@ namespace CharTable
             ClearItems();
             AddItems(ResourceManager.Instance.QueryItems("SELECT * from data WHERE use_count>0 ORDER BY use_count DESC"));
         }
+
+        public override void OnBatchModified(object? sender)
+        {
+            LoadItems();
+        }
     }
 }
