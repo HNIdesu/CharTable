@@ -31,18 +31,17 @@ namespace CharTable
                 ResourceManager.Instance.RegisterObserver(fontListPanel);
                 AddFontListTab("全部", fontListPanel);
 
-                fontListPanel = new FontListPanel();
+                fontListPanel = new OftenUseFontListPanel();
                 fontListPanel.OnFontRightClick += FontListPanel_OnFontRightClick;
                 fontListPanel.OnFontMouseEnter += FontListPanel_OnFontMouseEnter;
                 fontListPanel.OnFontMouseLeave += FontListPanel_OnFontMouseLeave;
-                fontListPanel.AddItems(list.Where(s => s.UseCount > 0).OrderByDescending(s => s.UseCount));
+                ResourceManager.Instance.RegisterObserver(fontListPanel);
                 AddFontListTab("常用", fontListPanel);
 
                 fontListPanel = new CollectionFontListPanel();
                 fontListPanel.OnFontRightClick += FontListPanel_OnFontRightClick;
                 fontListPanel.OnFontMouseEnter += FontListPanel_OnFontMouseEnter;
                 fontListPanel.OnFontMouseLeave += FontListPanel_OnFontMouseLeave;
-                fontListPanel.AddItems(list.Where(s => s.IsLike));
                 ResourceManager.Instance.RegisterObserver(fontListPanel);
                 AddFontListTab("收藏", fontListPanel);
             }

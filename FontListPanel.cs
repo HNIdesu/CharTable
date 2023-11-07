@@ -1,4 +1,6 @@
 ﻿
+using System.Collections;
+
 namespace CharTable
 {
     internal class FontListPanel:FlowLayoutPanel,Observer<Item>
@@ -14,6 +16,17 @@ namespace CharTable
         }
         public void AddItem(Item font)
         {
+            if (!DataBinding.ContainsKey(font))
+            {
+                var lb = CreateLabel(font);
+                Controls.Add(lb);
+                DataBinding.Add(font, lb);
+            }
+            
+        }
+
+        private Label CreateLabel(Item font)
+        {
             Label lb = new Label();
             lb.Size = new Size(50, 50);
             lb.BorderStyle = BorderStyle.FixedSingle;
@@ -24,8 +37,20 @@ namespace CharTable
             lb.MouseClick += Lb_MouseClick;
             lb.MouseEnter += Lb_MouseEnter;
             lb.MouseLeave += Lb_MouseLeave;
-            Controls.Add(lb);
+            return lb;
+        }
+
+        public void InsertItem(Item font,int index)
+        {
+            var lb = CreateLabel(font);
+            ((IList)Controls).Insert(index,lb);
             DataBinding.Add(font, lb);
+        }
+
+        public void ClearItems()
+        {
+            Controls.Clear();
+            DataBinding.Clear();
         }
 
         public void RemoveItem(Item font)
@@ -45,6 +70,7 @@ namespace CharTable
                 return true;
             });
         }
+
 
         private void Lb_MouseLeave(object? sender, EventArgs e)
         {

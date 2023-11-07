@@ -23,6 +23,22 @@ namespace CharTable
             _SQLiteConnection.Open();
         }
 
+        public List<Item> QueryItems(string sql)
+        {
+            SQLiteCommand cmd = _SQLiteConnection.CreateCommand();
+            cmd.CommandText = sql;
+            var reader=cmd.ExecuteReader();
+            List<Item> list = new List<Item>();
+            while (reader.Read())
+            {
+                Item item = new Item((char)reader.GetInt32(0), reader.GetString(1).Split(","));
+                item.UseCount = reader.GetInt32(2);
+                item.IsLike = reader.GetInt32(3) != 0;
+                list.Add(item);
+            }
+            reader.Close();
+            return list;
+        }
         public void UpdateFont(Item item)
         {
             SQLiteCommand cmd = _SQLiteConnection.CreateCommand();
