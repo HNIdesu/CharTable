@@ -1,10 +1,11 @@
 ﻿using System.Data.SQLite;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CharTable
 {
     internal class ResourceManager: Observable<Item>
     {
+
+
         public static readonly string DatabasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Characters.db");
         private static ResourceManager? _instance;
         private List<Observer<Item>> ObserverList = new List<Observer<Item>>();
@@ -61,8 +62,24 @@ namespace CharTable
                 cmd.ExecuteNonQuery();
                 NotifyItemUpdated(item);
             }
-                
-            
+
+        }
+        public Item? GetFont(char ch)
+        {
+            using (SQLiteCommand cmd = _SQLiteConnection.CreateCommand())
+            {
+                cmd.CommandText = $"SELECT * FROM data WHERE unicode={(int)ch}";
+                SQLiteDataReader reader = cmd.ExecuteReader();
+                Item? item=null;
+                if (reader.Read())
+                {
+                    item = new Item((char)reader.GetInt32(0), reader.GetString(1).Split(","));
+                    item.UseCount = reader.GetInt32(2);
+                    item.IsLike = reader.GetInt32(3) != 0;
+                }
+                reader.Close();
+                return item;
+            }
         }
 
         public void InsertFont(char ch, IEnumerable<string>? keywords)

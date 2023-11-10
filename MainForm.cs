@@ -160,11 +160,17 @@ namespace CharTable
                 item.IsLike = !item.IsLike;
                 ResourceManager.Instance.UpdateFont(item);
             }
+            else if (e.ClickedItem == toolStripMenuItem_Edit)
+            {
+                Item item = (Item)fontRightClickContextMenuStrip.Tag;
+                new EditCharForm(item.Char).ShowDialog();
+            }
         }
 
         private void clearUseCountToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ResourceManager.Instance.ClearUseCount();
+            MessageBox.Show("已清空全部使用记录");
         }
     }
 }

@@ -31,9 +31,11 @@
             components = new System.ComponentModel.Container();
             menuStrip1 = new MenuStrip();
             settingToolStripMenuItem = new ToolStripMenuItem();
+            clearUseCountToolStripMenuItem = new ToolStripMenuItem();
             fontRightClickContextMenuStrip = new ContextMenuStrip(components);
             toolStripMenuItem_Copy = new ToolStripMenuItem();
             toolStripMenuItem_Mark = new ToolStripMenuItem();
+            toolStripMenuItem_Edit = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel_Info = new ToolStripStatusLabel();
             splitContainer1 = new SplitContainer();
@@ -41,7 +43,6 @@
             button_Search = new Button();
             textBox_Search = new TextBox();
             tabControl1 = new TabControl();
-            clearUseCountToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             fontRightClickContextMenuStrip.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -66,11 +67,18 @@
             settingToolStripMenuItem.Size = new Size(44, 21);
             settingToolStripMenuItem.Text = "设置";
             // 
+            // clearUseCountToolStripMenuItem
+            // 
+            clearUseCountToolStripMenuItem.Name = "clearUseCountToolStripMenuItem";
+            clearUseCountToolStripMenuItem.Size = new Size(92, 21);
+            clearUseCountToolStripMenuItem.Text = "清空使用记录";
+            clearUseCountToolStripMenuItem.Click += clearUseCountToolStripMenuItem_Click;
+            // 
             // fontRightClickContextMenuStrip
             // 
-            fontRightClickContextMenuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_Copy, toolStripMenuItem_Mark });
+            fontRightClickContextMenuStrip.Items.AddRange(new ToolStripItem[] { toolStripMenuItem_Copy, toolStripMenuItem_Mark, toolStripMenuItem_Edit });
             fontRightClickContextMenuStrip.Name = "fontRightClickContextMenuStrip";
-            fontRightClickContextMenuStrip.Size = new Size(101, 48);
+            fontRightClickContextMenuStrip.Size = new Size(101, 70);
             fontRightClickContextMenuStrip.ItemClicked += fontRightClickContextMenuStrip_ItemClicked;
             // 
             // toolStripMenuItem_Copy
@@ -84,6 +92,12 @@
             toolStripMenuItem_Mark.Name = "toolStripMenuItem_Mark";
             toolStripMenuItem_Mark.Size = new Size(100, 22);
             toolStripMenuItem_Mark.Text = "收藏";
+            // 
+            // toolStripMenuItem_Edit
+            // 
+            toolStripMenuItem_Edit.Name = "toolStripMenuItem_Edit";
+            toolStripMenuItem_Edit.Size = new Size(100, 22);
+            toolStripMenuItem_Edit.Text = "编辑";
             // 
             // statusStrip1
             // 
@@ -157,13 +171,6 @@
             tabControl1.Size = new Size(826, 350);
             tabControl1.TabIndex = 0;
             // 
-            // clearUseCountToolStripMenuItem
-            // 
-            clearUseCountToolStripMenuItem.Name = "clearUseCountToolStripMenuItem";
-            clearUseCountToolStripMenuItem.Size = new Size(92, 21);
-            clearUseCountToolStripMenuItem.Text = "清空使用记录";
-            clearUseCountToolStripMenuItem.Click += clearUseCountToolStripMenuItem_Click;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
@@ -205,5 +212,6 @@
         private ToolStripStatusLabel toolStripStatusLabel_Info;
         private ToolStripMenuItem toolStripMenuItem_Mark;
         private ToolStripMenuItem clearUseCountToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItem_Edit;
     }
 }
